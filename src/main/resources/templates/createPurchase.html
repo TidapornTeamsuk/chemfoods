@@ -54,14 +54,11 @@
             margin-bottom: 20px;
         }
 
-        .product-item input {
+        .product-item input[type="text"],
+        .product-item input[type="number"] {
             width: calc(33.33% - 10px);
             display: inline-block;
             margin-right: 10px;
-        }
-
-        .product-item input:last-child {
-            margin-right: 0;
         }
 
         .button, .back-button {
@@ -106,6 +103,26 @@
         .add-product-btn:hover {
             background-color: #27ae60;
         }
+
+        .autocomplete-items {
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            position: absolute;
+            background-color: #fff;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .autocomplete-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -131,7 +148,8 @@
                 <div id="productContainer">
                     <div class="product-item">
                         <label for="productName">Product Name</label>
-                        <input type="text" name="products[0].name" placeholder="Product Name" required>
+                        <input type="text" id="productName-0" name="products[0].name" placeholder="Search Product" oninput="searchProduct(this, 0)" required>
+                        <div id="autocomplete-list-0" class="autocomplete-items"></div>
                         <label for="productQuantity">Quantity</label>
                         <input type="number" name="products[0].quantity" placeholder="Quantity" required>
                         <label for="productUnit">Unit</label>
@@ -155,7 +173,8 @@
             newProductItem.classList.add('product-item');
             newProductItem.innerHTML = `
                 <label for="productName">Product Name</label>
-                <input type="text" name="products[${productIndex}].name" placeholder="Product Name" required>
+                <input type="text" id="productName-${productIndex}" name="products[${productIndex}].name" placeholder="Search Product" oninput="searchProduct(this, ${productIndex})" required>
+                <div id="autocomplete-list-${productIndex}" class="autocomplete-items"></div>
                 <label for="productQuantity">Quantity</label>
                 <input type="number" name="products[${productIndex}].quantity" placeholder="Quantity" required>
                 <label for="productUnit">Unit</label>
@@ -163,6 +182,39 @@
             `;
             productContainer.appendChild(newProductItem);
             productIndex++;
+        }
+
+        async function searchProduct(input, index) {
+            const term = input.value;
+            if (!term) {
+                clearAutocomplete(index);
+                return;
+            }
+
+            const response = await fetch(`/purchases/api/products?term=${term}`);
+            const products = await response.json();
+            displayAutocomplete(products, index);
+        }
+
+        function displayAutocomplete(products, index) {
+            const autocompleteList = document.getElementById(`autocomplete-list-${index}`);
+            clearAutocomplete(index);
+
+            products.forEach(product => {
+                const item = document.createElement("div");
+                item.classList.add("autocomplete-item");
+                item.innerText = product.name;
+                item.addEventListener("click", () => {
+                    document.getElementById(`productName-${index}`).value = product.name;
+                    clearAutocomplete(index);
+                });
+                autocompleteList.appendChild(item);
+            });
+        }
+
+        function clearAutocomplete(index) {
+            const autocompleteList = document.getElementById(`autocomplete-list-${index}`);
+            autocompleteList.innerHTML = "";
         }
     </script>
 </body>
