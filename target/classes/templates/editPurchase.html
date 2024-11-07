@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Purchase</title>
+<style>
+.form-container {
+	margin: 0 auto;
+	width: 60%;
+	padding: 20px;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container label {
+	font-weight: bold;
+}
+
+.form-container input {
+	width: 100%;
+	padding: 8px;
+	margin: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.form-container button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.form-container button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+<body>
+	<div class="form-container">
+		<h2>Edit Purchase</h2>
+		<form th:action="@{/purchases/update/{id}(id=${purchase.id})}"
+			method="post">
+			<!-- Hidden input for the purchase id -->
+			<input type="hidden" name="id" th:value="${purchase.id}" /> <label
+				for="customerCompanyName">Customer Company Name</label> <input
+				type="text" id="customerCompanyName" name="customerCompanyName"
+				th:value="${purchase.customerCompanyName}" required /> <label
+				for="customerPhoneNumber">Customer Phone Number</label> <input
+				type="text" id="customerPhoneNumber" name="customerPhoneNumber"
+				th:value="${purchase.customerPhoneNumber}" required /> <label
+				for="purchaseDate">Purchase Date</label> <input type="date"
+				id="purchaseDate" name="purchaseDate"
+				th:value="${#dates.format(purchase.purchaseDate, 'yyyy-MM-dd')}"
+				required />
+
+			<h3>Products</h3>
+			<div th:each="product, iterStat : ${purchase.products}">
+				<label for="productName">Product Name</label> <input type="text"
+					id="productName" th:name="|products[__${iterStat.index}__].name|"
+					th:value="${product.name}" required /> <label
+					for="productQuantity">Quantity</label> <input type="number"
+					id="productQuantity"
+					th:name="|products[__${iterStat.index}__].quantity|"
+					th:value="${product.quantity}" required /> <label
+					for="productPrice">Price</label> <input type="number" step="0.01"
+					id="productPrice" th:name="|products[__${iterStat.index}__].price|"
+					th:value="${product.price}" required /> <br>
+				<br>
+			</div>
+
+			<button type="submit">Update Purchase</button>
+		</form>
+	</div>
+</body>
+</html>

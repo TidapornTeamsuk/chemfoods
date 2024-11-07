@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Purchases</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .table {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            margin-right: 10px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Purchases</h1>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Company</th>
+                    <th>Customer Phone</th>
+                    <th>Purchase Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="purchase : ${purchases}">
+                    <td th:text="${purchase.id}"></td>
+                    <td th:text="${purchase.customerCompanyName}"></td>
+                    <td th:text="${purchase.customerPhoneNumber}"></td>
+                    <td th:text="${#dates.format(purchase.purchaseDate, 'yyyy-MM-dd')}"></td>
+                    <td>
+                        <a th:href="@{/purchases/{id}(id=${purchase.id})}" class="btn btn-primary">View</a>
+                        <a th:href="@{/purchases/edit/{id}(id=${purchase.id})}" class="btn btn-secondary">Edit</a>
+                        <a th:href="@{/purchases/delete/{id}(id=${purchase.id})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/purchases/new}" class="btn btn-success">Create New Purchase</a>
+        <a th:href="@{/}" class="btn btn-info">Home</a>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
