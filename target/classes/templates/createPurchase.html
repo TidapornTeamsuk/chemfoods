@@ -126,96 +126,96 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Add New Purchase</h2>
-        
-        <form action="/purchases" method="post">
-            <div>
-                <label for="customerCompanyName">Customer Company Name</label>
-                <input type="text" id="customerCompanyName" name="customerCompanyName" required>
-            </div>
-            <div>
-                <label for="customerPhoneNumber">Customer Phone Number</label>
-                <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" required>
-            </div>
-            <div>
-                <label for="purchaseDate">Purchase Date</label>
-                <input type="date" id="purchaseDate" name="purchaseDate" required>
-            </div>
+<div class="container">
+    <h2>Add New Purchase</h2>
 
-            <div>
-                <h3>Products</h3>
-                <div id="productContainer">
-                    <div class="product-item">
-                        <label for="productName">Product Name</label>
-                        <input type="text" id="productName-0" name="products[0].name" placeholder="Search Product" oninput="searchProduct(this, 0)" required>
-                        <div id="autocomplete-list-0" class="autocomplete-items"></div>
-                        <label for="productQuantity">Quantity</label>
-                        <input type="number" name="products[0].quantity" placeholder="Quantity" required>
-                        <label for="productUnit">Unit</label>
-                        <input type="text" name="products[0].unit" placeholder="Unit" required>
-                    </div>
+    <form action="/purchases" method="post">
+        <div>
+            <label for="customerCompanyName">Customer Company Name</label>
+            <input type="text" id="customerCompanyName" name="customerCompanyName" required>
+        </div>
+        <div>
+            <label for="customerPhoneNumber">Customer Phone Number</label>
+            <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" required>
+        </div>
+        <div>
+            <label for="purchaseDate">Purchase Date</label>
+            <input type="date" id="purchaseDate" name="purchaseDate" required>
+        </div>
+
+        <div>
+            <h3>Products</h3>
+            <div id="productContainer">
+                <div class="product-item">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName-0" name="products[0].name" placeholder="Search Product" oninput="searchProduct(this, 0)" required>
+                    <div id="autocomplete-list-0" class="autocomplete-items"></div>
+                    <label for="productQuantity">Quantity</label>
+                    <input type="number" name="products[0].quantity" placeholder="Quantity" required>
+                    <label for="productUnit">Unit</label>
+                    <input type="text" name="products[0].unit" placeholder="Unit" required>
                 </div>
-                <button type="button" class="add-product-btn" onclick="addProduct()">Add Another Product</button>
             </div>
+            <button type="button" class="add-product-btn" onclick="addProduct()">Add Another Product</button>
+        </div>
 
-            <button type="submit" class="button">Save Purchase</button>
-        </form>
-        
-        <a href="/purchases" class="back-button">Back to All Purchases</a>
-    </div>
+        <button type="submit" class="button">Save Purchase</button>
+    </form>
 
-    <script>
-        let productIndex = 1;
-        function addProduct() {
-            const productContainer = document.getElementById('productContainer');
-            const newProductItem = document.createElement('div');
-            newProductItem.classList.add('product-item');
-            newProductItem.innerHTML = `
-                <label for="productName">Product Name</label>
-                <input type="text" id="productName-${productIndex}" name="products[${productIndex}].name" placeholder="Search Product" oninput="searchProduct(this, ${productIndex})" required>
-                <div id="autocomplete-list-${productIndex}" class="autocomplete-items"></div>
-                <label for="productQuantity">Quantity</label>
-                <input type="number" name="products[${productIndex}].quantity" placeholder="Quantity" required>
-                <label for="productUnit">Unit</label>
-                <input type="text" name="products[${productIndex}].unit" placeholder="Unit" required>
-            `;
-            productContainer.appendChild(newProductItem);
-            productIndex++;
-        }
+    <a href="/purchases" class="back-button">Back to All Purchases</a>
+</div>
 
-        async function searchProduct(input, index) {
-            const term = input.value;
-            if (!term) {
-                clearAutocomplete(index);
-                return;
-            }
+<script>
+    let productIndex = 1;
+    function addProduct() {
+        const productContainer = document.getElementById('productContainer');
+        const newProductItem = document.createElement('div');
+        newProductItem.classList.add('product-item');
+        newProductItem.innerHTML = `
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName-${productIndex}" name="products[${productIndex}].name" placeholder="Search Product" oninput="searchProduct(this, ${productIndex})" required>
+            <div id="autocomplete-list-${productIndex}" class="autocomplete-items"></div>
+            <label for="productQuantity">Quantity</label>
+            <input type="number" name="products[${productIndex}].quantity" placeholder="Quantity" required>
+            <label for="productUnit">Unit</label>
+            <input type="text" name="products[${productIndex}].unit" placeholder="Unit" required>
+        `;
+        productContainer.appendChild(newProductItem);
+        productIndex++;
+    }
 
-            const response = await fetch(`/purchases/api/products?term=${term}`);
-            const products = await response.json();
-            displayAutocomplete(products, index);
-        }
-
-        function displayAutocomplete(products, index) {
-            const autocompleteList = document.getElementById(`autocomplete-list-${index}`);
+    async function searchProduct(input, index) {
+        const term = input.value;
+        if (!term) {
             clearAutocomplete(index);
+            return;
+        }
 
-            products.forEach(product => {
-                const item = document.createElement("div");
-                item.classList.add("autocomplete-item");
-                item.innerText = product.name;
-                item.addEventListener("click", () => {
-                    document.getElementById(`productName-${index}`).value = product.name;
-                    clearAutocomplete(index);
-                });
-                autocompleteList.appendChild(item);
+        const response = await fetch(`/purchases/api/products?term=${term}`);
+        const products = await response.json();
+        displayAutocomplete(products, index);
+    }
+
+    function displayAutocomplete(products, index) {
+        const autocompleteList = document.getElementById(`autocomplete-list-${index}`);
+        clearAutocomplete(index);
+
+        products.forEach(product => {
+            const item = document.createElement("div");
+            item.classList.add("autocomplete-item");
+            item.innerText = product.name;
+            item.addEventListener("click", () => {
+                document.getElementById(`productName-${index}`).value = product.name;
+                clearAutocomplete(index);
             });
-        }
+            autocompleteList.appendChild(item);
+        });
+    }
 
-        function clearAutocomplete(index) {
-            const autocompleteList = document.getElementById(`autocomplete-list-${index}`);
-            autocompleteList.innerHTML = "";
-        }
-    </script>
+    function clearAutocomplete(index) {
+        const autocompleteList = document.getElementById(`autocomplete-list-${index}`);
+        autocompleteList.innerHTML = "";
+    }
+</script>
 </body>
 </html>

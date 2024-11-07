@@ -1,5 +1,6 @@
 package com.cp.kku.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class Purchase {
         joinColumns = @JoinColumn(name = "purchase_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+
+    @JsonIgnore
     private List<Product> products = new ArrayList<>(); // Initialize products as ArrayList
 
     // Getters and Setters

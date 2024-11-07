@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,10 +58,35 @@ public class PurchaseController {
     // Save a new purchase
     @PostMapping
     public String savePurchase(@ModelAttribute Purchase purchase) {
-        purchaseService.savePurchase(purchase); // Save purchase, which will cascade to products
+        // Get the list of all products in the database
+        List<Product> existingProducts = productService.getAllProducts();
+
+        List<Product> updatedProductList = new ArrayList<>();
+        for (Product productInPurchase : purchase.getProducts()) {
+            // Check if a product with the same name exists
+            Product existingProduct = existingProducts.stream()
+                    .filter(p -> p.getName().equalsIgnoreCase(productInPurchase.getName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (existingProduct != null) {
+                // If a product with the same name exists, reuse it
+                updatedProductList.add(existingProduct);
+            } else {
+                // Otherwise, add the new product
+                updatedProductList.add(productInPurchase);
+            }
+        }
+
+        // Set the updated product list in the purchase
+        purchase.setProducts(updatedProductList);
+
+        // Save the purchase (with cascade, this saves any new products automatically)
+        purchaseService.savePurchase(purchase);
+
         return "redirect:/purchases";  // Redirect to the list of purchases after saving
     }
-    
+
     // Show form to edit an existing purchase
     @GetMapping("/edit/{id}")
     public String editPurchaseForm(@PathVariable Long id, Model model) {
@@ -86,12 +112,12 @@ public class PurchaseController {
         purchaseService.deletePurchase(id);
         return "redirect:/purchases";  // Redirect to the list of purchases after deletion
     }
-    
- // API สำหรับค้นหาผลิตภัณฑ์
+
+    // API สำหรับค้นหาผลิตภัณฑ์
     @GetMapping("/api/products")
     @ResponseBody
     public List<Product> searchProducts(@RequestParam("term") String term) {
         return productRepository.findByNameContainingIgnoreCase(term); // ค้นหาจากชื่อผลิตภัณฑ์
     }
-    
+
 }

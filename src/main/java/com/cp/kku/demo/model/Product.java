@@ -1,5 +1,6 @@
 package com.cp.kku.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -54,6 +55,7 @@ public class Product {
         this.price = price;
     }
 
+    @JsonIgnore
     public List<Purchase> getPurchases() {
         return purchases;
     }
