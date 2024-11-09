@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Details</title>
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #e9f7ff;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 20px;
+        background-color: #007bff;
+        color: white;
+        margin: 0;
+    }
+
+    .container {
+        width: 80%;
+        margin: 30px auto;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .customer-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .info-value {
+        color: #555;
+    }
+
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 30px;
+        background-color: #17a2b8;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #138496;
+    }
+
+  </style>
+</head>
+<body>
+<h1>Customer Details</h1>
+
+<div class="container">
+  <div class="customer-info">
+    <p><span class="info-label">Name:</span> <span class="info-value" th:text="${customer.name}"></span></p>
+    <p><span class="info-label">Email:</span> <span class="info-value" th:text="${customer.email}"></span></p>
+    <p><span class="info-label">Phone Number:</span> <span class="info-value" th:text="${customer.phoneNumber}"></span></p>
+    <p><span class="info-label">Company:</span> <span class="info-value" th:text="${customer.companyName}"></span></p>
+  </div>
+
+  <a href="/customers" class="back-button">Back to Customer List</a>
+</div>
+</body>
+</html>

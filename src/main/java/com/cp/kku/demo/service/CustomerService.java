@@ -1,6 +1,7 @@
 package com.cp.kku.demo.service;
 
 import com.cp.kku.demo.model.Customer;
+import com.cp.kku.demo.model.Product;
 import com.cp.kku.demo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

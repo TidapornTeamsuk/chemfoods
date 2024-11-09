@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #e9f7ff;
             color: #333;
             margin: 0;
             padding: 0;
@@ -15,7 +15,7 @@
         h1 {
             text-align: center;
             padding: 20px;
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             margin: 0;
         }
@@ -36,7 +36,7 @@
         }
 
         th {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
         }
 
@@ -45,11 +45,11 @@
         }
 
         tr:hover td {
-            background-color: #e2f5e0;
+            background-color: #b3d8ff;
         }
 
         a {
-            color: #4CAF50;
+            color: #007bff;
             text-decoration: none;
             padding: 5px 10px;
             margin: 0 5px;
@@ -58,7 +58,7 @@
         }
 
         a:hover {
-            background-color: #e2f5e0;
+            background-color: #b3d8ff;
         }
 
         .actions {
@@ -71,7 +71,7 @@
             margin: 30px auto;
             padding: 12px 0;
             text-align: center;
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -81,7 +81,23 @@
         }
 
         .add-button:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
+        }
+
+        .btn-info {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px;
+            background-color: #17a2b8;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
         }
     </style>
 </head>
@@ -113,6 +129,6 @@
 </table>
 
 <a href="/customers/new" class="add-button">Add New Customer</a>
-<a th:href="@{/}" class="btn btn-info">Home</a>
+<a th:href="@{/}" class="btn-info">Home</a>
 </body>
 </html>
