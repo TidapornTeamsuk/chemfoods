@@ -6,20 +6,123 @@
     <title>Add New Purchase</title>
     <style>
         /* Basic reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background-color: #f4f7fc; color: #333; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background-color: white; border-radius: 8px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        h2 { color: #2c3e50; font-size: 28px; margin-bottom: 20px; }
-        label { display: block; font-size: 14px; font-weight: bold; margin: 10px 0 5px; }
-        input[type="text"], input[type="number"], input[type="date"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 15px; }
-        .product-item { margin-bottom: 20px; position: relative; }
-        .autocomplete-items { border: 1px solid #ddd; border-top: none; z-index: 99; position: absolute; background-color: #fff; max-height: 150px; overflow-y: auto; width: 100%; }
-        .autocomplete-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #ddd; }
-        .autocomplete-item:hover { background-color: #f1f1f1; }
-        .button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; text-align: center; display: inline-block; text-decoration: none; }
-        .button:hover { background-color: #2980b9; }
-        .back-button { background-color: #7f8c8d; color: white; padding: 10px 18px; border-radius: 5px; font-size: 14px; text-align: center; display: inline-block; text-decoration: none; }
-        .back-button:hover { background-color: #34495e; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .product-item {
+            margin-bottom: 20px;
+        }
+
+        .product-item input[type="text"],
+        .product-item input[type="number"] {
+            width: calc(33.33% - 10px);
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .button, .back-button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .button:hover, .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #7f8c8d;
+        }
+
+        .back-button:hover {
+            background-color: #34495e;
+        }
+
+        .add-product-btn {
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 5px;
+            font-size: 14px;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border: none;
+        }
+
+        .add-product-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .autocomplete-items {
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            position: absolute;
+            background-color: #fff;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .autocomplete-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -27,7 +130,6 @@
     <h2>Add New Purchase</h2>
 
     <form action="/purchases" method="post">
-        <!-- Customer Information Section -->
         <div>
             <label for="customerCompanyName">Customer Company Name</label>
             <input type="text" id="customerCompanyName" name="customerCompanyName" required>
@@ -41,18 +143,20 @@
             <input type="date" id="purchaseDate" name="purchaseDate" required>
         </div>
 
-        <!-- Product Selection Section -->
         <div>
             <h3>Products</h3>
-            <div class="product-item">
-                <label for="productName">Product Name</label>
-                <input type="text" id="productName-0" name="products[0].name" placeholder="Search Product" oninput="searchProduct(this, 0)" required>
-                <div id="autocomplete-list-0" class="autocomplete-items"></div>
-                <label for="productQuantity">Quantity</label>
-                <input type="number" name="products[0].quantity" placeholder="Quantity" required>
-                <label for="productUnit">Unit</label>
-                <input type="text" name="products[0].unit" placeholder="Unit" required>
+            <div id="productContainer">
+                <div class="product-item">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName-0" name="products[0].name" placeholder="Search Product" oninput="searchProduct(this, 0)" required>
+                    <div id="autocomplete-list-0" class="autocomplete-items"></div>
+                    <label for="productQuantity">Quantity</label>
+                    <input type="number" name="products[0].quantity" placeholder="Quantity" required>
+                    <label for="productUnit">Unit</label>
+                    <input type="text" name="products[0].unit" placeholder="Unit" required>
+                </div>
             </div>
+            <button type="button" class="add-product-btn" onclick="addProduct()">Add Another Product</button>
         </div>
 
         <button type="submit" class="button">Save Purchase</button>
@@ -62,6 +166,24 @@
 </div>
 
 <script>
+    let productIndex = 1;
+    function addProduct() {
+        const productContainer = document.getElementById('productContainer');
+        const newProductItem = document.createElement('div');
+        newProductItem.classList.add('product-item');
+        newProductItem.innerHTML = `
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName-${productIndex}" name="products[${productIndex}].name" placeholder="Search Product" oninput="searchProduct(this, ${productIndex})" required>
+            <div id="autocomplete-list-${productIndex}" class="autocomplete-items"></div>
+            <label for="productQuantity">Quantity</label>
+            <input type="number" name="products[${productIndex}].quantity" placeholder="Quantity" required>
+            <label for="productUnit">Unit</label>
+            <input type="text" name="products[${productIndex}].unit" placeholder="Unit" required>
+        `;
+        productContainer.appendChild(newProductItem);
+        productIndex++;
+    }
+
     async function searchProduct(input, index) {
         const term = input.value;
         if (!term) {
