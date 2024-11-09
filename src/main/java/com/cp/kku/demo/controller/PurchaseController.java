@@ -26,12 +26,27 @@ public class PurchaseController {
     @Autowired
     private ProductRepository productRepository;
 
-    // Show all purchases
+//    // Show all purchases
+//    @GetMapping
+//    public String listPurchases(Model model) {
+//        List<Purchase> purchases = purchaseService.getAllPurchases();
+//        model.addAttribute("purchases", purchases);
+//        return "listPurchases";  // View for listing all purchases
+//    }
+
     @GetMapping
-    public String listPurchases(Model model) {
-        List<Purchase> purchases = purchaseService.getAllPurchases();
+    public String viewPurchases(@RequestParam(name = "search", required = false) String search, Model model) {
+        List<Purchase> purchases;
+
+        if (search != null && !search.isEmpty()) {
+            purchases = purchaseService.searchPurchasesByCompanyName(search);
+            model.addAttribute("searchTerm", search);
+        } else {
+            purchases = purchaseService.getAllPurchases();
+        }
+
         model.addAttribute("purchases", purchases);
-        return "listPurchases";  // View for listing all purchases
+        return "listPurchases"; // ชื่อไฟล์ HTML ที่ใช้แสดงผล
     }
 
     // Show details of a specific purchase

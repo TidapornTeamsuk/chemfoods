@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Build-Jdk-Spec: 22
-Implementation-Title: Lab5_653380265_6-1
-Implementation-Version: 0.0.1-SNAPSHOT
-Created-By: Maven Integration for Eclipse
-

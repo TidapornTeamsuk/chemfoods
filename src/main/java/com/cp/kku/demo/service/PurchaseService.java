@@ -3,6 +3,7 @@ package com.cp.kku.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.cp.kku.demo.model.Product;
 import com.cp.kku.demo.model.Purchase;
 import com.cp.kku.demo.repository.PurchaseRepository;
 
@@ -34,5 +35,9 @@ public class PurchaseService {
 
     public void deletePurchase(Long id) {
         purchaseRepository.deleteById(id);
+    }
+
+    public List<Purchase> searchPurchasesByCompanyName(String companyName) {
+        return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
     }
 }

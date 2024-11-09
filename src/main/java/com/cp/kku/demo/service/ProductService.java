@@ -38,4 +38,8 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
+    public List<Product> searchProducts(String searchTerm) {
+        return productRepository.findByNameContainingIgnoreCase(searchTerm);
+    }
 }

@@ -18,11 +18,26 @@ public class ProductController {
     private ProductService productService;
 
     // Show all products
+//    @GetMapping
+//    public String listProducts(Model model) {
+//        List<Product> products = productService.getAllProducts();
+//        model.addAttribute("products", products);
+//        return "listProducts";  // View for listing all products
+//    }
+
     @GetMapping
-    public String listProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
+    public String getProductList(@RequestParam(value = "search", required = false) String searchTerm, Model model) {
+        List<Product> products;
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            products = productService.searchProducts(searchTerm);
+        } else {
+            products = productService.getAllProducts();
+        }
+
         model.addAttribute("products", products);
-        return "listProducts";  // View for listing all products
+        model.addAttribute("searchTerm", searchTerm);  // ส่งค่าคำค้นหากลับไปแสดงใน input
+        return "listProducts";
     }
 
     // Show details of a specific product

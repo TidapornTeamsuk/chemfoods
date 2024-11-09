@@ -6,11 +6,35 @@
     <title>Product Details</title>
 </head>
 <body>
-    <h1>Product Details</h1>
-    <p><strong>Product Name:</strong> <span th:text="${product.name}"></span></p>
-    <p><strong>Quantity:</strong> <span th:text="${product.quantity}"></span></p>
-    <p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
+<h1>Product Details</h1>
+<p><strong>Product Name:</strong> <span th:text="${product.name}"></span></p>
+<p><strong>Quantity:</strong> <span th:text="${product.quantity}"></span></p>
+<p><strong>Price:</strong> <span th:text="${product.price}"></span></p>
 
-    <a href="/products">Back to Product List</a>
+<!-- Table to display purchase history -->
+<h2>Purchase History</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Purchase ID</th>
+        <th>Customer</th>
+        <th>Purchase Date</th>
+        <th>Quantity Purchased</th>
+        <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="purchase : ${product.purchases}">
+        <td th:text="${purchase.id}"></td>
+        <td th:text="${purchase.customer_company_name}"></td>
+        <td th:text="${purchase.purchaseDate}"></td>
+        <td th:text="${purchase.quantity}"></td>
+        <td th:text="${purchase.totalPrice}"></td>
+
+    </tr>
+    </tbody>
+</table>
+
+<a href="/products">Back to Product List</a>
 </body>
 </html>

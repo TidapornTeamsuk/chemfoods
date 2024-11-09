@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Customer</title>
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+<h1>Edit Customer</h1>
+<form action="/customers/update/{customer.id}" method="post">
+    <input type="hidden" name="id" th:value="${customer.id}"/>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${customer.name}" required/><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:value="${customer.email}" required/><br><br>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${customer.phoneNumber}" required/><br><br>
+
+    <label for="companyName">Company Name:</label>
+    <input type="text" id="companyName" name="companyName" th:value="${customer.companyName}" required/><br><br>
+
+    <label for="address">Address:</label>
+    <textarea id="address" name="address" th:value="${customer.address}" required></textarea><br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<a href="/customers">Back to Customer List</a>
+</body>
+</html>
