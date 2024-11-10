@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Company Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2 class="text-center">Company Details</h2>
+
+  <!-- แสดงข้อมูลบริษัท -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title" th:text="${company.name}">Company Name</h5>
+
+      <p class="card-text"><strong>Address:</strong> <span th:text="${company.address}">Address</span></p>
+      <p class="card-text"><strong>Contact:</strong> <span th:text="${company.contact}">Contact</span></p>
+      <p class="card-text"><strong>Tax ID:</strong> <span th:text="${company.taxId}">Tax ID</span></p>
+      <p class="card-text"><strong>Website:</strong> <span th:text="${company.website}">Website</span></p>
+    </div>
+  </div>
+
+  <!-- แสดงประวัติการซื้อ -->
+  <h3 class="mt-5">Purchase History</h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+    <tr>
+      <th scope="col">Purchase ID</th>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+      <th scope="col">Purchase Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="purchase : ${purchases}">
+      <td th:text="${purchase.id}">1</td>
+      <td th:text="${purchase.product.name}">Product Name</td>
+      <td th:text="${purchase.quantity}">10</td>
+      <td th:text="${purchase.price}">100.00</td>
+      <td th:text="${purchase.purchaseDate}">2024-11-10</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- ปุ่มกลับไปยังหน้ารายการบริษัท -->
+  <div class="d-flex justify-content-end mt-3">
+    <a href="/companies" class="btn btn-secondary">Back to Company List</a>
+  </div>
+</div>
+</body>
+</html>
