@@ -40,4 +40,14 @@ public class PurchaseService {
     public List<Purchase> searchPurchasesByCompanyName(String companyName) {
         return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
     }
+
+    // ฟังก์ชันเพื่อดึงประวัติการซื้อทั้งหมดตาม companyId
+    public List<Purchase> getPurchasesByCompanyId(Long companyId) {
+        return purchaseRepository.findByCompanyId(companyId);
+    }
+
+    // ดึงรายการ Purchase ตามชื่อบริษัท (ค้นหาแบบใกล้เคียง)
+    public List<Purchase> getPurchasesByCompanyName(String companyName) {
+        return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
+    }
 }

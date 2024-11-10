@@ -26,12 +26,18 @@ public class PurchaseController {
     @Autowired
     private ProductRepository productRepository;
 
-    // Show all purchases
+    // แสดงรายการ Purchase ทั้งหมดหรือค้นหาตามชื่อบริษัท
     @GetMapping
-    public String listPurchases(Model model) {
-        List<Purchase> purchases = purchaseService.getAllPurchases();
+    public String listPurchases(@RequestParam(name = "search", required = false) String searchTerm, Model model) {
+        List<Purchase> purchases;
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            purchases = purchaseService.getPurchasesByCompanyName(searchTerm);
+        } else {
+            purchases = purchaseService.getAllPurchases();
+        }
         model.addAttribute("purchases", purchases);
-        return "listPurchases";  // View for listing all purchases
+        model.addAttribute("searchTerm", searchTerm);
+        return "listPurchases";
     }
 
     // Show details of a specific purchase

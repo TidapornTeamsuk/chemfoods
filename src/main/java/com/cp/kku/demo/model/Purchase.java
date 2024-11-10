@@ -14,6 +14,10 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+
     private String customerCompanyName;
     private String customerPhoneNumber;
 
@@ -69,6 +73,14 @@ public class Purchase {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
     
     public void updateProduct(Product product) {

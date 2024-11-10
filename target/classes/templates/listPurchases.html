@@ -1,73 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Purchases</title>
+    <title>Purchase List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            padding-top: 20px;
             background-color: #f8f9fa;
+            padding-top: 20px;
         }
-
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
         h1 {
             margin-bottom: 20px;
         }
-
         .table {
-            margin-bottom: 20px;
+            margin-top: 10px;
         }
-
         .btn {
-            margin-right: 10px;
+            margin-right: 5px;
         }
-
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Style for search input */
         .search-form {
             margin-bottom: 20px;
-        }
-        .search-form input[type="text"] {
-            padding: 8px;
-            width: 80%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .search-form button {
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .search-form button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Purchases</h1>
 
-    <!-- Search Container -->
+<div class="container">
+    <h1>Purchase List</h1>
+
+    <!-- Search form for filtering by company name -->
     <div class="search-form">
         <form th:action="@{/purchases}" method="get">
-            <input type="text" name="search" id="searchInput" placeholder="Search Company" th:value="${searchTerm}" />
-            <button type="submit">Search</button>
+            <input type="text" name="search" class="form-control d-inline-block w-75" placeholder="Search by company name..." th:value="${searchTerm}">
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
 
-    <table class="table table-bordered table-striped table-hover" id="purchaseTable">
+    <!-- Purchase table -->
+    <table class="table table-bordered table-hover">
         <thead class="thead-light">
         <tr>
             <th>ID</th>
-            <th>Customer Company</th>
+            <th>Company Name</th>
             <th>Customer Phone</th>
             <th>Purchase Date</th>
             <th>Actions</th>
@@ -80,38 +59,20 @@
             <td th:text="${purchase.customerPhoneNumber}"></td>
             <td th:text="${#dates.format(purchase.purchaseDate, 'yyyy-MM-dd')}"></td>
             <td>
-                <a th:href="@{/purchases/{id}(id=${purchase.id})}" class="btn btn-primary">View</a>
-                <a th:href="@{/purchases/edit/{id}(id=${purchase.id})}" class="btn btn-secondary">Edit</a>
-                <a th:href="@{/purchases/delete/{id}(id=${purchase.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/purchases/view/{id}(id=${purchase.id})}" class="btn btn-info btn-sm">View</a>
+                <a th:href="@{/purchases/edit/{id}(id=${purchase.id})}" class="btn btn-secondary btn-sm">Edit</a>
+                <a th:href="@{/purchases/delete/{id}(id=${purchase.id})}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <!-- Button to create a new purchase -->
     <a th:href="@{/purchases/new}" class="btn btn-success">Create New Purchase</a>
-    <a th:href="@{/}" class="btn btn-info">Home</a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    // JavaScript function to filter purchases based on input
-    function filterPurchases() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const table = document.getElementById('purchaseTable');
-        const rows = table.getElementsByTagName('tr');
-
-        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-            const companyName = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
-            const phoneNumber = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
-
-            if (companyName.includes(input) || phoneNumber.includes(input)) {
-                rows[i].style.display = '';
-            } else {
-                rows[i].style.display = 'none';
-            }
-        }
-    }
-</script>
 </body>
 </html>
