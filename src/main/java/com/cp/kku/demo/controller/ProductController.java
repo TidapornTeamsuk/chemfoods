@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     // Save a new product
-    @PostMapping
+    @PostMapping("/new")
     public String saveProduct(@ModelAttribute Product product) {
         productService.saveProduct(product); // Save product
         return "redirect:/products";  // Redirect to the list of products after saving

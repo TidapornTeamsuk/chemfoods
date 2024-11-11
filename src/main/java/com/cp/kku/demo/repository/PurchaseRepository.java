@@ -17,4 +17,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     // ค้นหาประวัติการซื้อจากชื่อบริษัทใน Customer (ใช้ชื่อบริษัทที่อยู่ใน Customer)
     List<Purchase> findByCustomerCompanyNameContainingIgnoreCase(String companyName);
+
+    public List<Purchase> findByCompanyNameContainingIgnoreCase(String companyName);
 }

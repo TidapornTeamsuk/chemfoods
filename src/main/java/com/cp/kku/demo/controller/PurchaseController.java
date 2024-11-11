@@ -1,8 +1,12 @@
 package com.cp.kku.demo.controller;
 
+import com.cp.kku.demo.model.Company;
 import com.cp.kku.demo.model.Product;
 import com.cp.kku.demo.model.Purchase;
+import com.cp.kku.demo.repository.CompanyRepository;
+import com.cp.kku.demo.repository.CustomerRepository;
 import com.cp.kku.demo.repository.ProductRepository;
+import com.cp.kku.demo.service.CompanyService;
 import com.cp.kku.demo.service.ProductService;
 import com.cp.kku.demo.service.PurchaseService;
 
@@ -26,6 +30,15 @@ public class PurchaseController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
     // แสดงรายการ Purchase ทั้งหมดหรือค้นหาตามชื่อบริษัท
     @GetMapping
     public String listPurchases(@RequestParam(name = "search", required = false) String searchTerm, Model model) {
@@ -41,24 +54,40 @@ public class PurchaseController {
     }
 
     // Show details of a specific purchase
-    @GetMapping("/{id}")
-    public String showPurchase(@PathVariable Long id, Model model) {
-        Optional<Purchase> purchase = purchaseService.getPurchaseById(id);
-        if (purchase.isPresent()) {
-            model.addAttribute("purchase", purchase.get());
-            return "showPurchase";  // View for showing purchase details
+//    @GetMapping("/{id}")
+//    public String showPurchase(@PathVariable Long id, Model model) {
+//        Optional<Purchase> purchase = purchaseService.getPurchaseById(id);
+//        if (purchase.isPresent()) {
+//            model.addAttribute("purchase", purchase.get());
+//            return "showPurchase";  // View for showing purchase details
+//        }
+//        return "error";  // Redirect to error page if purchase is not found
+//    }
+
+
+    @GetMapping("/view/{id}")
+    public String viewPurchaseDetails(@PathVariable Long id, Model model) {
+        Optional<Purchase> optionalPurchase = purchaseService.getPurchaseById(id); // เรียกใช้เมธอด getPurchaseById
+        if (optionalPurchase.isPresent()) {
+            model.addAttribute("purchase", optionalPurchase.get()); // ส่งเฉพาะ Purchase ที่มีค่าไปยัง Thymeleaf
+            return "showPurchase"; // ชื่อไฟล์ HTML สำหรับหน้าแสดงรายละเอียด
+        } else {
+            // handle กรณีที่ไม่พบ Purchase ในฐานข้อมูล
+            return "error"; // แสดงหน้า error หากไม่พบข้อมูล
         }
-        return "error";  // Redirect to error page if purchase is not found
     }
 
     // Show form to create a new purchase
     @GetMapping("/new")
     public String createPurchaseForm(Model model) {
+        List<Company> companies = companyRepository.findAll(); // ดึงข้อมูลจากฐานข้อมูล
+        model.addAttribute("companies", companies); // ส่งข้อมูลบริษัทไปยัง view
+
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);  // ส่ง products ไปยัง view
 
-        model.addAttribute("purchase", new Purchase());
-        return "createPurchase";  // View for creating a new purchase
+        model.addAttribute("purchase", new Purchase());  // สร้าง Purchase ใหม่
+        return "createPurchase";  // ส่งไปยัง view สำหรับการสร้าง Purchase ใหม่
     }
 
     // Save a new purchase
@@ -111,7 +140,6 @@ public class PurchaseController {
         return "redirect:/purchases";  // Redirect to the updated purchase details
     }
 
-
     // Delete a purchase
     @GetMapping("/delete/{id}")
     public String deletePurchase(@PathVariable Long id) {
@@ -124,6 +152,19 @@ public class PurchaseController {
     @ResponseBody
     public List<Product> searchProducts(@RequestParam("term") String term) {
         return productRepository.findByNameContainingIgnoreCase(term); // ค้นหาจากชื่อผลิตภัณฑ์
+    }
+
+    @GetMapping("/search")
+    public String searchPurchases(@RequestParam(required = false) String companyName, Model model) {
+        List<Purchase> purchases;
+        if (companyName != null && !companyName.isEmpty()) {
+            purchases = purchaseService.findByCompanyName(companyName); // สร้างฟังก์ชันค้นหาจากชื่อบริษัทใน service
+        } else {
+            purchases = purchaseService.getAllPurchases(); // แสดงรายการทั้งหมดถ้าไม่มีการค้นหา
+        }
+        model.addAttribute("purchases", purchases);
+        model.addAttribute("searchTerm", companyName); // ส่งค่า searchTerm กลับไปยังฟอร์ม
+        return "listPurchases"; // ชื่อไฟล์ HTML ที่แสดงรายการซื้อ
     }
 
 }

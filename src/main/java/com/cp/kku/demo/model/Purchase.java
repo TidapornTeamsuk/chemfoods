@@ -3,6 +3,8 @@ package com.cp.kku.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,8 @@ public class Purchase {
 
     @JsonIgnore
     private List<Product> products = new ArrayList<>(); // Initialize products as ArrayList
+
+    private BigDecimal totalAmount;
 
     // Getters and Setters
     public Long getId() {
@@ -81,6 +85,14 @@ public class Purchase {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
     
     public void updateProduct(Product product) {

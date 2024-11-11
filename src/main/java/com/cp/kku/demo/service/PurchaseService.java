@@ -50,4 +50,8 @@ public class PurchaseService {
     public List<Purchase> getPurchasesByCompanyName(String companyName) {
         return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
     }
+
+    public List<Purchase> findByCompanyName(String companyName) {
+        return purchaseRepository.findByCompanyNameContainingIgnoreCase(companyName); // การค้นหาจากชื่อบริษัทที่ตรงหรือใกล้เคียง
+    }
 }

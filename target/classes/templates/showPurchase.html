@@ -1,127 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-        }
         .container {
-            width: 80%;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            text-align: center;
-            font-size: 32px;
+
+        h2 {
             color: #333;
             margin-bottom: 20px;
         }
-        .details-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .details-header h2 {
-            color: #007BFF;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .details-header p {
-            color: #555;
-            font-size: 16px;
-        }
-        .detail-section {
-            margin-bottom: 30px;
-        }
-        .detail-section p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
-        .products-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-            padding: 0;
-            margin: 0;
-            list-style-type: none;
-        }
-        .products-list li {
-            background-color: #ffffff;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .products-list li span {
-            font-size: 16px;
-            color: #333;
-        }
-        .products-list li strong {
+
+        .detail-label {
             font-weight: bold;
-            color: #007BFF;
         }
+
         .back-button {
-            display: inline-block;
-            background-color: #28a745;
+            margin-top: 20px;
+            background-color: #7f8c8d;
             color: white;
-            padding: 12px 20px;
-            text-decoration: none;
+            padding: 10px 20px;
+            border: none;
             border-radius: 5px;
-            font-size: 18px;
-            text-align: center;
-            transition: background-color 0.3s;
-            margin-top: 30px;
-            text-transform: uppercase;
+            font-size: 16px;
+            text-decoration: none;
         }
+
         .back-button:hover {
-            background-color: #218838;
+            background-color: #34495e;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Purchase Details</h1>
 
-        <!-- Header Section -->
-        <div class="details-header">
-            <h2>Purchase #<span th:text="${purchase.id}"></span></h2>
-            <p>Customer: <span th:text="${purchase.customerCompanyName}"></span></p>
-            <p>Date: <span th:text="${#dates.format(purchase.purchaseDate, 'yyyy-MM-dd')}"></span></p>
-        </div>
+<div class="container">
+    <h2>Purchase Details</h2>
 
-        <!-- Customer Details -->
-        <div class="detail-section">
-            <p><strong>Phone Number:</strong> <span th:text="${purchase.customerPhoneNumber}"></span></p>
-        </div>
-
-        <!-- Products List -->
-        <div class="detail-section">
-            <p><strong>Products:</strong></p>
-            <ul class="products-list">
-                <li th:each="product : ${purchase.products}">
-                    <span><strong>Name:</strong> <span th:text="${product.name}"></span></span>
-                    <span><strong>Quantity:</strong> <span th:text="${product.quantity}"></span></span>
-                    <span><strong>Price:</strong> <span th:text="${product.price}"></span></span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Back Button -->
-        <a href="/purchases" class="back-button">Back to All Purchases</a>
+    <div class="mb-3">
+        <span class="detail-label">ID:</span>
+        <span th:text="${purchase.id}"></span>
     </div>
+
+    <div class="mb-3">
+        <span class="detail-label">Company Name:</span>
+        <span th:text="${purchase.company.name}"></span>
+    </div>
+
+    <div class="mb-3">
+        <span class="detail-label">Contact:</span>
+        <span th:text="${purchase.company.contact}"></span>
+    </div>
+
+    <div class="mb-3">
+        <span class="detail-label">Purchase Date:</span>
+        <span th:text="${#dates.format(purchase.purchaseDate, 'yyyy-MM-dd')}"></span>
+    </div>
+
+    <div class="mb-3">
+        <span class="detail-label">Total Amount:</span>
+        <span th:text="${purchase.totalAmount}"></span>
+    </div>
+
+    <h4>Products</h4>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${purchase.products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.unit}"></td>
+            <td th:text="${product.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/purchases" class="back-button">Back to All Purchases</a>
+</div>
+
 </body>
 </html>

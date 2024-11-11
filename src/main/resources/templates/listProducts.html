@@ -1,137 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
         }
         .container {
-            width: 90%;
-            margin: 30px auto;
             background-color: #fff;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            text-align: center;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px 0;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        .actions a {
-            margin-right: 10px;
-        }
-        .search-form {
+        h1 {
             margin-bottom: 20px;
         }
-        .search-form input[type="text"] {
-            padding: 8px;
-            width: 80%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .table {
+            margin-top: 10px;
         }
-        .search-form button {
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .btn {
+            margin-right: 5px;
         }
-        .search-form button:hover {
-            background-color: #0056b3;
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
-<header>
-    <h1>Product List</h1>
-</header>
+
 <div class="container">
-    <!-- Add New Product Button -->
-    <a href="/products/new" class="button">Add New Product</a>
+
+    <h1>Product List</h1>
     <a href="/" class="button">Home</a>
 
-    <!-- Search Form -->
-    <div class="search-form">
-        <form th:action="@{/products}" method="get">
-            <input type="text" name="search" placeholder="Search Products" th:value="${searchTerm}" />
-            <button type="submit">Search</button>
-        </form>
-    </div>
-
-    <!-- Product Table -->
-    <table>
-        <thead>
+    <!-- Product table -->
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
         <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
             <th>Price</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Image</th> <!-- เพิ่มคอลัมน์สำหรับแสดงรูปภาพ -->
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
             <td th:text="${product.name}"></td>
-            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.description}"></td>
             <td th:text="${product.price}"></td>
-            <td class="actions">
-                <a th:href="@{/products/{id}(id=${product.id})}">View</a>
-                <a th:href="@{/products/edit/{id}(id=${product.id})}">Edit</a>
-                <a th:href="@{/products/delete/{id}(id=${product.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.unit}"></td>
+            <!-- เพิ่มการแสดงรูปภาพ -->
+            <td>
+                <img th:src="@{${product.image}}" class="product-image" alt="Product Image"/>
+            </td>
+            <td>
+                <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-secondary btn-sm">Edit</a>
+                <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
 
+    <!-- Button to create a new product -->
+    <a th:href="@{/products/new}" class="btn btn-success">Create New Product</a>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

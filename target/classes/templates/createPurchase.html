@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,14 +130,27 @@
     <h2>Add New Purchase</h2>
 
     <form action="/purchases" method="post">
+        <!-- Company Name dropdown -->
         <div>
-            <label for="customerCompanyName">Customer Company Name</label>
-            <input type="text" id="customerCompanyName" name="customerCompanyName" required>
+<!--            <label for="CompanyName">Company Name</label>-->
+<!--            <select id="CompanyName" name="CompanyName" required>-->
+<!--                <option value="">Select Company</option>-->
+<!--                &lt;!&ndash; Options will be dynamically populated by Thymeleaf &ndash;&gt;-->
+<!--                <th:block th:each="company : ${companies}">-->
+<!--                    <option th:value="${company.id}" th:text="${company.name}"></option>-->
+<!--                </th:block>-->
+<!--            </select>-->
+
+            <select id="CompanyName" name="company.id" required>
+                <option value="">Select Company</option>
+                <th:block th:each="company : ${companies}">
+                    <option th:value="${company.id}" th:text="${company.name}"></option>
+                </th:block>
+            </select>
+
         </div>
-        <div>
-            <label for="customerPhoneNumber">Customer Phone Number</label>
-            <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" required>
-        </div>
+
+
         <div>
             <label for="purchaseDate">Purchase Date</label>
             <input type="date" id="purchaseDate" name="purchaseDate" required>
