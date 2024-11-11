@@ -22,6 +22,11 @@ public class CompanyService {
         return companyRepository.findById(id);
     }
 
+    public Company save(Company company) {
+        // ถ้า Company ยังไม่ได้มี id, จะถือว่าเป็น Company ใหม่
+        return companyRepository.save(company);  // บันทึกข้อมูล Company ในฐานข้อมูล
+    }
+
     public Company createCompany(Company company) {
         return companyRepository.save(company);
     }
@@ -44,4 +49,5 @@ public class CompanyService {
     public void deleteCompany(Long id) {
         companyRepository.deleteById(id);
     }
+
 }

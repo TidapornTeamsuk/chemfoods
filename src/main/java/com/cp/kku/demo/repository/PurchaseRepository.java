@@ -13,10 +13,13 @@ import java.util.List;
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     // ค้นหาประวัติการซื้อจาก companyId
-    List<Purchase> findByCompanyId(Long companyId);
+    List<Purchase> findByCompanyId(Long id);
+
 
     // ค้นหาประวัติการซื้อจากชื่อบริษัทใน Customer (ใช้ชื่อบริษัทที่อยู่ใน Customer)
-    List<Purchase> findByCustomerCompanyNameContainingIgnoreCase(String companyName);
+//    List<Purchase> findByCustomerCompanyNameContainingIgnoreCase(String companyName);
 
-    public List<Purchase> findByCompanyNameContainingIgnoreCase(String companyName);
+//    public List<Purchase> findByCompanyNameContainingIgnoreCase(String companyName);
+    List<Purchase> findByCompanyNameContainingIgnoreCase(String companyName);
+
 }

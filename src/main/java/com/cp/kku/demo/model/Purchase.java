@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +21,10 @@ public class Purchase {
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    private String customerCompanyName;
-    private String customerPhoneNumber;
+//    private String customerCompanyName;
+//    private String customerPhoneNumber;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date purchaseDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -36,6 +37,8 @@ public class Purchase {
     @JsonIgnore
     private List<Product> products = new ArrayList<>(); // Initialize products as ArrayList
 
+//    private List<Product> products;
+
     private BigDecimal totalAmount;
 
     // Getters and Setters
@@ -47,21 +50,21 @@ public class Purchase {
         this.id = id;
     }
 
-    public String getCustomerCompanyName() {
-        return customerCompanyName;
-    }
-
-    public void setCustomerCompanyName(String customerCompanyName) {
-        this.customerCompanyName = customerCompanyName;
-    }
-
-    public String getCustomerPhoneNumber() {
-        return customerPhoneNumber;
-    }
-
-    public void setCustomerPhoneNumber(String customerPhoneNumber) {
-        this.customerPhoneNumber = customerPhoneNumber;
-    }
+//    public String getCustomerCompanyName() {
+//        return customerCompanyName;
+//    }
+//
+//    public void setCustomerCompanyName(String customerCompanyName) {
+//        this.customerCompanyName = customerCompanyName;
+//    }
+//
+//    public String getCustomerPhoneNumber() {
+//        return customerPhoneNumber;
+//    }
+//
+//    public void setCustomerPhoneNumber(String customerPhoneNumber) {
+//        this.customerPhoneNumber = customerPhoneNumber;
+//    }
 
     public Date getPurchaseDate() {
         return purchaseDate;
@@ -70,6 +73,14 @@ public class Purchase {
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
+
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
     public List<Product> getProducts() {
         return products;
@@ -94,7 +105,7 @@ public class Purchase {
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
-    
+
     public void updateProduct(Product product) {
         // Find the corresponding product in the list and update its details
         for (int i = 0; i < this.products.size(); i++) {

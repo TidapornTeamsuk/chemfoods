@@ -16,6 +16,9 @@ public class PurchaseService {
 	@Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private  CompanyService companyService;
+
     public List<Purchase> getAllPurchases() {
         return (List<Purchase>) purchaseRepository.findAll();
     }
@@ -24,9 +27,13 @@ public class PurchaseService {
         return purchaseRepository.findById(id);
     }
 
-    public Purchase savePurchase(Purchase purchase) {
-        return purchaseRepository.save(purchase);
+    public void savePurchase(Purchase purchase) {
+        if (purchase.getCompany() != null && purchase.getCompany().getId() == null) {
+            companyService.save(purchase.getCompany());  // บันทึก Company หากยังไม่ถูกบันทึก
+        }
+        purchaseRepository.save(purchase);  // บันทึก Purchase
     }
+
 
     public Purchase updatePurchase(Long id, Purchase updatedPurchase) {
     	updatedPurchase.setId(id); // Ensure the ID is set for updating
@@ -37,9 +44,9 @@ public class PurchaseService {
         purchaseRepository.deleteById(id);
     }
 
-    public List<Purchase> searchPurchasesByCompanyName(String companyName) {
-        return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
-    }
+//    public List<Purchase> searchPurchasesByCompanyName(String companyName) {
+//        return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
+//    }
 
     // ฟังก์ชันเพื่อดึงประวัติการซื้อทั้งหมดตาม companyId
     public List<Purchase> getPurchasesByCompanyId(Long companyId) {
@@ -48,7 +55,7 @@ public class PurchaseService {
 
     // ดึงรายการ Purchase ตามชื่อบริษัท (ค้นหาแบบใกล้เคียง)
     public List<Purchase> getPurchasesByCompanyName(String companyName) {
-        return purchaseRepository.findByCustomerCompanyNameContainingIgnoreCase(companyName);
+        return purchaseRepository.findByCompanyNameContainingIgnoreCase(companyName);
     }
 
     public List<Purchase> findByCompanyName(String companyName) {

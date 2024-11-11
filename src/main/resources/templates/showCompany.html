@@ -13,7 +13,6 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title" th:text="${company.name}">Company Name</h5>
-
       <p class="card-text"><strong>Address:</strong> <span th:text="${company.address}">Address</span></p>
       <p class="card-text"><strong>Contact:</strong> <span th:text="${company.contact}">Contact</span></p>
       <p class="card-text"><strong>Tax ID:</strong> <span th:text="${company.taxId}">Tax ID</span></p>
@@ -21,25 +20,23 @@
     </div>
   </div>
 
-  <!-- แสดงประวัติการซื้อ -->
+
   <h3 class="mt-5">Purchase History</h3>
   <table class="table table-bordered mt-3">
     <thead>
     <tr>
       <th scope="col">Purchase ID</th>
-      <th scope="col">Product</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
       <th scope="col">Purchase Date</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="purchase : ${purchases}">
-      <td th:text="${purchase.id}">1</td>
-      <td th:text="${purchase.product.name}">Product Name</td>
-      <td th:text="${purchase.quantity}">10</td>
-      <td th:text="${purchase.price}">100.00</td>
-      <td th:text="${purchase.purchaseDate}">2024-11-10</td>
+    <!-- วนลูปแสดงการซื้อ -->
+    <tr th:each="purchase : ${company.purchases}">
+      <!-- แสดง Purchase ID และ Purchase Date ในแถวแรกของแต่ละคำสั่งซื้อ -->
+      <td rowspan="${purchase.products.size()}">
+        <a th:href="@{/purchases/view/{id}(id=${purchase.id})}" th:text="${purchase.id}"></a>
+      </td>
+      <td rowspan="${purchase.products.size()}" th:text="${purchase.purchaseDate}">2024-11-11</td>
     </tr>
     </tbody>
   </table>

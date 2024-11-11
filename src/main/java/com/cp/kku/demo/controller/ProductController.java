@@ -64,26 +64,54 @@ public class ProductController {
         productService.saveProduct(product); // Save product
         return "redirect:/products";  // Redirect to the list of products after saving
     }
-    
+
     // Show form to edit an existing product
+//    @GetMapping("/edit/{id}")
+//    public String editProductForm(@PathVariable Long id, Model model) {
+//        Optional<Product> product = productService.getProductById(id);
+//        if (product.isPresent()) {
+//            model.addAttribute("product", product.get());
+//            return "editProduct";  // View for editing an existing product
+//        }
+//        return "error";  // Redirect to error page if product is not found
+//    }
+
+//    @GetMapping("/edit/{id}")
+//    public String showEditForm(@PathVariable("id") Long id, Model model) {
+//        Optional<Product> product = productService.getProductById(id);
+//        model.addAttribute("product", product);
+//        return "editProduct";
+//    }
+
     @GetMapping("/edit/{id}")
-    public String editProductForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
             model.addAttribute("product", product.get());
-            return "editProduct";  // View for editing an existing product
+        } else {
+            // Handle the case where the product is not found (redirect or show error)
+            return "redirect:/products";
         }
-        return "error";  // Redirect to error page if product is not found
+        return "editProduct";
     }
 
+
+
     // Update an existing product
+//    @PostMapping("/update/{id}")
+//    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute Product product) {
+//        Optional<Product> existingProduct = productService.getProductById(id);
+//        if (existingProduct.isPresent()) {
+//            existingProduct.get().updateProduct(product.getName(), product.getQuantity(), product.getPrice());
+//            productService.saveProduct(existingProduct.get());
+//        }
+//        return "redirect:/products";
+//    }
+
     @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute Product product) {
-        Optional<Product> existingProduct = productService.getProductById(id);
-        if (existingProduct.isPresent()) {
-            existingProduct.get().updateProduct(product.getName(), product.getQuantity(), product.getPrice());
-            productService.saveProduct(existingProduct.get());
-        }
+    public String updateProduct(@PathVariable Long id, @ModelAttribute Product updatedProduct) {
+        // เรียกใช้ service เพื่ออัปเดตผลิตภัณฑ์
+        productService.updateProduct(id, updatedProduct);
         return "redirect:/products";
     }
 

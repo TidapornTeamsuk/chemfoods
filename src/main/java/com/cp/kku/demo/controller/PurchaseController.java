@@ -77,6 +77,17 @@ public class PurchaseController {
         }
     }
 
+//    @GetMapping("/view/{id}")
+//    public String viewPurchaseDetails(@PathVariable Long id, Model model) {
+//        Optional<Purchase> optionalPurchase = purchaseService.getPurchaseById(id);
+//        if (optionalPurchase.isPresent()) {
+//            model.addAttribute("purchase", optionalPurchase.get());
+//            return "showPurchase";  // ทำการส่งข้อมูลไปที่เทมเพลต
+//        } else {
+//            return "error";  // ถ้าไม่พบข้อมูลให้แสดง error
+//        }
+//    }
+
     // Show form to create a new purchase
     @GetMapping("/new")
     public String createPurchaseForm(Model model) {
@@ -123,15 +134,34 @@ public class PurchaseController {
     }
 
     // Show form to edit an existing purchase
+//    @GetMapping("/edit/{id}")
+//    public String editPurchaseForm(@PathVariable Long id, Model model) {
+//        Optional<Purchase> purchase = purchaseService.getPurchaseById(id);
+//        if (purchase.isPresent()) {
+//            model.addAttribute("purchase", purchase.get());
+//            return "editPurchase";  // View for editing an existing purchase
+//        }
+//        return "error";  // Redirect to error page if purchase is not found
+//    }
+
     @GetMapping("/edit/{id}")
-    public String editPurchaseForm(@PathVariable Long id, Model model) {
-        Optional<Purchase> purchase = purchaseService.getPurchaseById(id);
-        if (purchase.isPresent()) {
-            model.addAttribute("purchase", purchase.get());
-            return "editPurchase";  // View for editing an existing purchase
+    public String editPurchase(@PathVariable("id") Long id, Model model) {
+        // ดึงข้อมูล Purchase โดยไม่ใช้ Optional โดยตรง
+        Optional<Purchase> purchaseOptional = purchaseService.getPurchaseById(id);
+        if (purchaseOptional.isPresent()) {
+            Purchase purchase = purchaseOptional.get(); // ดึงค่า Purchase ออกจาก Optional
+            List<Company> companies = companyService.getAllCompanies();
+
+            // ส่งข้อมูลที่ได้ไปที่ View
+            model.addAttribute("purchase", purchase);  // ส่ง purchase ที่เป็นอ็อบเจ็กต์ไม่ใช่ Optional
+            model.addAttribute("companies", companies);
+
+            return "editPurchase";  // ส่งไปยัง template editPurchase.html
+        } else {
+            return "error";  // ถ้าไม่พบข้อมูล
         }
-        return "error";  // Redirect to error page if purchase is not found
     }
+
 
     // Update an existing purchase
     @PostMapping("/update/{id}")
